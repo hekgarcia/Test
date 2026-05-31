@@ -1,1 +1,81 @@
-Hola Dios te bendiga 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Biblioteca Adoración Nocturna Sección San Charbel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 850px;
+      margin: auto;
+      padding: 20px;
+      background: #f7f7f7;
+    }
+
+    h1 {
+      color: #2e7d32;
+    }
+
+    .archivo {
+      background: white;
+      margin: 10px 0;
+      padding: 14px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px #ddd;
+    }
+
+    a {
+      text-decoration: none;
+      color: #1565c0;
+      font-size: 18px;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>📚 Biblioteca Parroquial</h1>
+  <p>Documentos disponibles:</p>
+
+  <div id="lista">Cargando documentos...</div>
+
+  <script>
+    const usuario = "hekgarcia";
+    const repositorio = "Test";
+    const carpeta = "documentos";
+
+    const url = `https://api.github.com/repos/${usuario}/${repositorio}/contents/${carpeta}`;
+
+    fetch(url)
+      .then(response => response.json())
+      .then(archivos => {
+        const lista = document.getElementById("lista");
+        lista.innerHTML = "";
+
+        archivos.forEach(archivo => {
+          if (archivo.type === "file") {
+            const div = document.createElement("div");
+            div.className = "archivo";
+
+            div.innerHTML = `
+              📄 <a href="${archivo.download_url}" target="_blank">
+                ${archivo.name}
+              </a>
+            `;
+
+            lista.appendChild(div);
+          }
+        });
+      })
+      .catch(error => {
+        document.getElementById("lista").innerHTML =
+          "No se pudieron cargar los documentos.";
+      });
+  </script>
+</body>
+</html>
